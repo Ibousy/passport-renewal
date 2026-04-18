@@ -1,6 +1,6 @@
 FROM php:8.4-cli
 
-ARG CACHEBUST=2
+ARG CACHEBUST=3
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -30,17 +30,15 @@ COPY . .
 # Build frontend
 RUN npm run build
 
-# Laravel setup
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+# Create required directories and files
+RUN mkdir -p database storage/logs storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache \
+    && touch database/database.sqlite \
+    && chmod -R 775 storage bootstrap/cache database
 
-# Permissions
-RUN chmod -R 775 storage bootstrap/cache
-
-EXPOSE 8000
-
+# Copy start script
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
+
+EXPOSE 8000
 
 CMD ["/start.sh"]
