@@ -1,4 +1,4 @@
-pe@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Demande ' . $demande->numero_demande)
 @section('page-title', 'Suivi de la demande')
