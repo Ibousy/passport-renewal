@@ -23,7 +23,7 @@ class Notification extends Model
 
     public function marquerLu(): void
     {
-        $this->update(['lu' => true, 'lu_le' => now()]);
+        $this->delete();
     }
 
     public function user()
